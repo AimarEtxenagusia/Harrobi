@@ -1,8 +1,16 @@
 <?php
 
-require 'konexioa.php'
-
-    ?>
+    require "konexioa.php";
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $email = $_POST['email'];
+        $pasahitza = $_POST['pasahitza'];
+        if(empty($email) || empty($pasahitza)){
+            echo "Sartu datu guztiak.";
+        }else{
+            
+        }
+    }
+?>
 
 <!DOCTYPE html>
 
@@ -10,55 +18,25 @@ require 'konexioa.php'
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hasiera</title>
-    <link rel="stylesheet" href="css/navbar.css">
-    <link rel="stylesheet" href="css/taulak.css">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/login.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-XXXX" crossorigin="anonymous">
 
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <nav>
-        <nav class="navbar">
-            <img src="img/harrobi.png" alt="Logo" class="logo">
-            <ul>
-                <li><a href="index.php">Bezeroak</a></li>
-                <li><a href="instalazioak.php">Instalazioak</a></li>
-            </ul>
-        </nav>
 
+    <img src="img/harrobi.png" alt="">
 
-    </nav>
-    <h1>BEZEROAK</h1>
-    <table>
-        <tr>
-            <th>IZENA</th>
-            <th>ABIZENA</th>
-            <th>EMAIL-A</th>
-            <th>PASAHITZA</th>
-            <th>NAN</th>
-            <th>INSTALAZIOA</th>
-        </tr>
-        <?php
-        $sql = "SELECT * FROM bezeroa";
-        $result = $conn->query($sql);
+    <form action="login.php" method="post">
+        <label for="name" name="email">SARTU ZURE EMAIL-A</label>
+        <input type="mail" name="email">
+        <label for="name" name="pasahitza">SARTU ZURE PASAHITZA</label>
+        <input type="password" name="pasahitza">
+        <input type="submit" value="SAIOA HASI">
+    </form>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-YYYY" crossorigin="anonymous"></script>
 
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>" . $row["izena"] . "</td>";
-                echo "<td>" . $row["abizena"] . "</td>";
-                echo "<td>" . $row["email"] . "</td>";
-                echo "<td>" . $row["pasahitza"] . "</td>";
-                echo "<td>" . $row["nan"] . "</td>";
-                echo "<td>" . $row["instalazioa"] . "</td>";
-                echo '<td id="aldatu"><a href="bezeroaAldatu.php?id=' . $row['id'] . '"><img src="img/aldatu.png" alt="Aldatu"></a></td>';
-                echo '<td id="ezabatu"><a href="bezeroaEzabatu.php?id=' . $row['id'] . '"><img src="img/ezabatu.png" alt="Ezabatu"></a></td>';
-                echo "</tr>";
-
-            }
-        }
-        ?>
-    </table>
 </body>
 
 </html>

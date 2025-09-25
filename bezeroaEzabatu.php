@@ -14,7 +14,7 @@ if ($stmt = $conn->prepare($sql)) {
 
     if ($stmt->execute()) {
 
-        header("Location: index.php");
+        header("Location: bezeroa.php");
         exit;
     } else {
         echo "Errorea: " . $stmt->error;

@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <nav class="navbar">
             <img src="img/harrobi.png" alt="Logo" class="logo">
             <ul>
-                <li><a href="index.php">Bezeroak</a></li>
+                <li><a href="bezeroa.php">Bezeroak</a></li>
                 <li><a href="instalazioak.php">Instalazioak</a></li>
             </ul>
         </nav>

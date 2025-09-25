@@ -13,6 +13,7 @@ require 'konexioa.php'
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/taulak.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
@@ -27,27 +28,37 @@ require 'konexioa.php'
 
 
     </nav>
-    <h1>INSTALAZIOAK</h1>
+    <h1>BEZEROAK</h1>
     <table>
         <tr>
             <th>IZENA</th>
+            <th>ABIZENA</th>
+            <th>EMAIL-A</th>
+            <th>PASAHITZA</th>
+            <th>NAN</th>
+            <th>INSTALAZIOA</th>
         </tr>
         <?php
-        $sql = "SELECT * FROM instalazioa";
+        $sql = "SELECT * FROM bezeroa";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>" . $row["izena"] . "</td>";
+                echo "<td>" . $row["abizena"] . "</td>";
+                echo "<td>" . $row["email"] . "</td>";
+                echo "<td>" . $row["pasahitza"] . "</td>";
+                echo "<td>" . $row["nan"] . "</td>";
+                echo "<td>" . $row["instalazioa"] . "</td>";
+                echo '<td id="aldatu"><a href="bezeroaAldatu.php?id=' . $row['id'] . '"><img src="img/aldatu.png" alt="Aldatu"></a></td>';
+                echo '<td id="ezabatu"><a href="bezeroaEzabatu.php?id=' . $row['id'] . '"><img src="img/ezabatu.png" alt="Ezabatu"></a></td>';
                 echo "</tr>";
 
             }
         }
         ?>
     </table>
-
-    <a href="gehituInstalazioa.php"><button id="btn" type="submit">GEHITU INSTALAZIOA</button></a>
 </body>
 
 </html>

@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param("ssssssi", $izena, $abizena, $email, $pasahitza, $nan, $instalazioa, $id);
 
         if ($stmt->execute()) {
-            header("Location: index.php");
+            header("Location: bezeroa.php");
             exit;
         } else {
             echo "Errorea: " . $stmt->error;
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <nav class="navbar">
             <img src="img/harrobi.png" alt="Logo" class="logo">
             <ul>
-                <li><a href="index.php">Bezeroak</a></li>
+                <li><a href="bezeroa.php">Bezeroak</a></li>
                 <li><a href="instalazioak.php">Instalazioak</a></li>
             </ul>
         </nav>
@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="hidden" name="id" value="<?php echo $id; ?>">
 
         <input type="submit" value="ALDATU">
-        <a class="btn-cancel" href="index.php">ITZULI</a>
+        <a class="btn-cancel" href="bezeroa.php">ITZULI</a>
     </form>
 </body>
 
