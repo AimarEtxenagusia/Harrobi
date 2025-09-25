@@ -1,32 +1,65 @@
 <?php
 include "konexioa.php";
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $izena = $_POST['bezeroaIzena'];
-        $abizena = $_POST['bezeroaAbizena'];
-        $email = $_POST['bezeroaEmail'];
-        $pasahitza = $_POST['bezeroaPasahitza'];
-        $nan = $_POST['bezeroaNan'];
-        $instalazioa = $_POST['bezeroaInstalazioa'];
-
-        if (!preg_match('/^[0-9]{8}[A-Za-z]$/', $nan)) {
-            echo "<span style='color:red'>NAN formatu okerra! Idatzi 8 zenbaki eta letra bat (adibidez: 12345678F)</span>";
-        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo "<span style='color:red'>Email formatu okerra! Idatzi email zuzena (adibidez: iker@gmail.com)</span>";
-        } else {
-            $sql = "INSERT INTO bezeroa (izena, abizena, email, pasahitza, nan, instalazioa) VALUES ('$izena', '$abizena', '$email', '$pasahitza','$nan', '$instalazioa')";
-            if (mysqli_query($conn, $sql)) {
-                echo "bezeroa ondo gehitu da!";
-            } else {
-                echo "Errorea: " . mysqli_error($conn);
-            }
-        }
-    }else {
-        // Instalazioak lortzeko SQL kontsulta
-        $instalazioak_sql = "SELECT * FROM instalazioa";
-        $instalazioak_result = $conn->query($instalazioak_sql);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $izena = trim($_POST['bezeroaIzena']);
+    $abizena = trim($_POST['bezeroaAbizena']);
+    $email = trim($_POST['bezeroaEmail']);
+    $pasahitza = trim($_POST['bezeroaPasahitza']);
+    $nan = trim($_POST['bezeroaNan']);
+    $instalazioa_id = $_POST['bezeroaInstalazioa'];
+    $instalazioa_query = "SELECT izena FROM instalazioa WHERE id = '$instalazioa_id'";
+    $instalazioa_result = $conn->query($instalazioa_query);
+    $instalazioa = "";
+    if ($instalazioa_result && $instalazioa_result->num_rows > 0) {
+        $instalazioa_row = $instalazioa_result->fetch_assoc();
+        $instalazioa = $instalazioa_row['izena'];
     }
-    ?>
+
+    $errores = [];
+    if (empty($izena)) {
+        $errores[] = "El campo 'Nombre' es obligatorio.";
+    }
+    if (empty($abizena)) {
+        $errores[] = "El campo 'Apellido' es obligatorio.";
+    }
+    if (empty($email)) {
+        $errores[] = "El campo 'Email' es obligatorio.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errores[] = "El email no es válido.";
+    }
+    if (empty($pasahitza)) {
+        $errores[] = "El campo 'Contraseña' es obligatorio.";
+    }
+    if (empty($nan)) {
+        $errores[] = "El campo 'DNI' es obligatorio.";
+    } elseif (!preg_match('/^[0-9]{8}[A-Za-z]$/', $nan)) {
+        $errores[] = "El DNI debe tener 8 números y una letra (ejemplo: 12345678A).";
+    }
+    if (empty($instalazioa_id)) {
+        $errores[] = "Debes seleccionar una instalación.";
+    }
+
+    if (count($errores) === 0) {
+        $sql = "INSERT INTO bezeroa (izena, abizena, email, pasahitza, nan, instalazioa) VALUES ('$izena', '$abizena', '$email', '$pasahitza','$nan', '$instalazioa')";
+        if (mysqli_query($conn, $sql)) {
+            echo '<div class="alert alert-success mt-3">Bezeroa ondo gehitu da!</div>';
+        } else {
+            echo '<div class="alert alert-danger mt-3">Errorea: ' . mysqli_error($conn) . '</div>';
+        }
+    } else {
+        echo '<div class="alert alert-danger mt-3"><ul class="mb-0">';
+        foreach ($errores as $err) {
+            echo '<li>' . $err . '</li>';
+        }
+        echo '</ul></div>';
+    }
+} else {
+    // Instalazioak lortzeko SQL kontsulta
+    $instalazioak_sql = "SELECT * FROM instalazioa";
+    $instalazioak_result = $conn->query($instalazioak_sql);
+}
+?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -56,34 +89,60 @@ include "konexioa.php";
 
     </nav>
     <h1>Bezeroa Gehitu</h1>
-    <form action="" method="post">
-        <label for="name">IZENA</label>
-        <input type="text" name="bezeroaIzena" value="" required>
-        <label for="name">ABIZENA</label>
-        <input type="text" name="bezeroaAbizena" value="" required>
-        <label for="name">EMAIL-A</label>
-        <input type="email" name="bezeroaEmail" value="" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Idatzi email formatu zuzena (adibidez: uni@uni.eus)">
-        <label for="name">PASAHITZA</label>
-        <input type="password" name="bezeroaPasahitza" value="" required>
-        <label for="name">NAN-A</label>
-        <input type="text" name="bezeroaNan" value="" required>
-        <label for="name">INSTALAZIOAREN IZENA</label>
-        <select id="aukera" name="bezeroaInstalazioa" required>
-            <?php
-            while ($instalazioa = $instalazioak_result->fetch_assoc()) {
-                echo "<option value='" . $instalazioa['id'] . "'>" . $instalazioa['izena'] . "</option>";
-            }
-            ?>
-        </select>
-        <br>
-        <br>
-        <button type="submit" id="gehitu">GEHITU </button>
-        <br>
-        <br>
-        <button class="btn-cancel" href="index.php">ITZULI</a>
+    <form action="" method="post" class="needs-validation" novalidate>
+        
+            <label for="bezeroaIzena" class="form-label">IZENA <span style="color:red">*</span></label>
+            <input type="text" class="form-control" id="bezeroaIzena" name="bezeroaIzena" required>
+      
+        
+            <label for="bezeroaAbizena" class="form-label">ABIZENA <span style="color:red">*</span></label>
+            <input type="text" class="form-control" id="bezeroaAbizena" name="bezeroaAbizena" required>
+           
+        
+            <label for="bezeroaEmail" class="form-label">EMAIL-A <span style="color:red">*</span></label>
+            <input type="email" class="form-control" id="bezeroaEmail" name="bezeroaEmail" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Idatzi email formatu zuzena (adibidez: uni@uni.eus)">
+            
+       
+            <label for="bezeroaPasahitza" class="form-label">PASAHITZA <span style="color:red">*</span></label>
+            <input type="password" class="form-control" id="bezeroaPasahitza" name="bezeroaPasahitza" required>
+   
+            <label for="bezeroaNan" class="form-label">NAN-A <span style="color:red">*</span></label>
+            <input type="text" class="form-control" id="bezeroaNan" name="bezeroaNan" required pattern="^[0-9]{8}[A-Za-z]$" title="Idatzi 8 zenbaki eta letra bat (adibidez: 12345678F)">
+           
+        
+        
+            <label for="bezeroaInstalazioa" class="form-label">INSTALAZIOAREN IZENA <span style="color:red">*</span></label>
+            <select class="form-select" id="bezeroaInstalazioa" name="bezeroaInstalazioa" required>
+                <option value="">Aukeratu instalazioa</option>
+                <?php
+                // Volver a importar las instalaciones si el formulario se muestra tras POST
+                if (!isset($instalazioak_result) || !$instalazioak_result) {
+                    $instalazioak_sql = "SELECT * FROM instalazioa";
+                    $instalazioak_result = $conn->query($instalazioak_sql);
+                }
+                if ($instalazioak_result && $instalazioak_result->num_rows > 0) {
+                    foreach ($instalazioak_result as $instalazioa) {
+                        echo "<option value='" . $instalazioa['id'] . "'>" . $instalazioa['izena'] . "</option>";
+                    }
+                }
+                ?>
+            </select>
+            
+        
+            
+        
+        
+            <br><br>
+        <div class="d-flex gap-2">
+            <button type="submit" id="gehitu" class="btn btn-primary  w-100">GEHITU</button>
+            <br><br>
+            <button id="btn-cancel" class="btn btn-primary w-100" href="index.php">ITZULI</button> 
+        </div>
+       
     </form>
 
- 
+
+
 </body>
 
 </html>
