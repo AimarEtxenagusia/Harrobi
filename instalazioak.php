@@ -22,6 +22,7 @@ require 'konexioa.php'
             <ul>
                 <li><a href="bezeroa.php">Bezeroak</a></li>
                 <li><a href="instalazioak.php">Instalazioak</a></li>
+                <li><a href="index.php">Saioa Itxi</a></li>
             </ul>
         </nav>
 
@@ -40,6 +41,8 @@ require 'konexioa.php'
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>" . $row["izena"] . "</td>";
+                echo '<td id="aldatu"><a href="instalazioaAldatu.php?id=' . $row['id'] . '"><img src="img/aldatu.png" alt="Aldatu"></a></td>';
+                echo '<td id="ezabatu"><a href="instalazioaEzabatu.php?id=' . $row['id'] . '"><img src="img/ezabatu.png" alt="Ezabatu"></a></td>';
                 echo "</tr>";
 
             }

@@ -20,6 +20,7 @@
             <ul>
                 <li><a href="bezeroa.php">Bezeroak</a></li>
                 <li><a href="instalazioak.php">Instalazioak</a></li>
+                <li><a href="index.php">Saioa Itxi</a></li>
             </ul>
         </nav>
 

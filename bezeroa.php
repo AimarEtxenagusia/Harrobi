@@ -1,8 +1,28 @@
 <?php
 
-require 'konexioa.php'
+require 'konexioa.php';
+if (isset($_SERVER['HTTP_REFERER'])) {
+    $referer = $_SERVER['HTTP_REFERER'];
+    if (strpos($referer, 'index.php') !== false) {
+        $id = $_GET['id'];
+        $id = trim($id, "'");
+        $id = (int) $id;
+        $sql = "SELECT izena, abizena FROM langilea WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-    ?>
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+        } else {
+            die("Ez da langilerik aurkitu izen horrekin.");
+        }
+    }
+}
+
+
+?>
 
 <!DOCTYPE html>
 
@@ -23,11 +43,20 @@ require 'konexioa.php'
             <ul>
                 <li><a href="bezeroa.php">Bezeroak</a></li>
                 <li><a href="instalazioak.php">Instalazioak</a></li>
+                <li><a href="index.php">Saioa Itxi</a></li>
             </ul>
         </nav>
 
 
     </nav>
+    <?php
+    if (isset($_SERVER['HTTP_REFERER'])) {
+        $referer = $_SERVER['HTTP_REFERER'];
+        if (strpos($referer, 'index.php') !== false) {
+            echo "<h1>Ongi etorri " . $row["izena"] . " " . $row["abizena"] . "!</h1>";
+        }
+    }
+    ?>
     <h1>BEZEROAK</h1>
     <table>
         <tr>
