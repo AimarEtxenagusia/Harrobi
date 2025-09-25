@@ -77,7 +77,7 @@ include "konexioa.php";
         </select>
         <br>
         <br>
-        <button type="submit" id="gehitu">GEHITU</button>
+        <button type="submit" id="gehitu">GEHITU </button>
         <br>
         <br>
         <button class="btn-cancel" href="index.php">ITZULI</a>
