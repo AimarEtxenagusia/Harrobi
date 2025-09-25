@@ -84,14 +84,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label for="name">NAN-A</label>
         <input type="text" name="bezeroaNan" value="<?php echo $row['nan'] ?>" required>
         <label for="name">INSTALAZIOAREN IZENA</label>
-        <select id="aukera" name="bezeroaInstalazioa" required>
+        <select name="bezeroaInstalazioa" required>
             <?php
             while ($instalazioa = $instalazioak_result->fetch_assoc()) {
-                $selected = ($instalazioa['id'] == $row['instalazioa']) ? "selected" : "";
-                echo "<option value='" . $instalazioa['id'] . "' $selected selected>" . $instalazioa['izena'] . "</option>";
+                $selected = ($instalazioa['izena'] == $row['instalazioa']) ? "selected" : "";
+                echo "<option value='" . $instalazioa['izena'] . "' $selected>" . $instalazioa['izena'] . "</option>";
             }
             ?>
         </select>
+        <input type="hidden" name="id" value="<?php echo $id; ?>">
+
         <input type="submit" value="ALDATU">
         <a class="btn-cancel" href="index.php">ITZULI</a>
     </form>

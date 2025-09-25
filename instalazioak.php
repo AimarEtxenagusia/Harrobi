@@ -40,8 +40,6 @@ require 'konexioa.php'
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>" . $row["izena"] . "</td>";
-                echo '<td id="aldatu"><a href="instalazioaAldatu.php?id=' . $row['id'] . '"><img src="img/aldatu.png" alt="Aldatu"></a></td>';
-                echo '<td id="ezabatu"><a href="instalazioaEzabatu.php?id=' . $row['id'] . '"><img src="img/ezabatu.png" alt="Ezabatu"></a></td>';
                 echo "</tr>";
 
             }

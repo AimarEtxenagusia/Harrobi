@@ -43,7 +43,7 @@ form input[type="submit"] {
 }
 
 form input[type="submit"]:hover {
-    background-color: #b8bfc7;
+    background-color: #696f76;
     cursor: pointer;
 }
 
@@ -81,28 +81,32 @@ form button#gehitu:hover {
 }
 
 .btn-cancel:hover {
-    background-color: #b8bfc7;
+    background-color: #696f76;
 }
 
 select {
-  width: 100%;
-  padding: 10px 14px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #fff;
-  font-size: 16px;
-  font-family: 'Lato', sans-serif;
-  color: #333;
-  appearance: none; 
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  cursor: pointer;
-  transition: border-color 0.3s, box-shadow 0.3s;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    font-size: 16px;
+    font-family: 'Lato', sans-serif;
+    appearance: none;  
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='292.4'%20height='292.4'%3E%3Cpath%20fill='%23999'%20d='M287%2069.4c0-4.9-1.9-9.7-5.5-13.4-7.4-7.4-19.3-7.4-26.7%200L146.2%20165.2%2037.6%2056.6c-7.4-7.4-19.3-7.4-26.7%200-7.4%207.4-7.4%2019.3%200%2026.7l120.5%20120.5c7.4%207.4%2019.3%207.4%2026.7%200L281.5%2082.8c3.6-3.6%205.5-8.4%205.5-13.4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    cursor: pointer;
+    margin-bottom: 20px;
 }
 
 select:focus {
-  border-color: #007BFF;
-  box-shadow: 0 0 5px rgba(0,123,255,0.4);
-  outline: none;
+    border-color: #007BFF;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0,123,255,0.5);
 }
+
 
