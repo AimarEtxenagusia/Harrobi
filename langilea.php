@@ -17,22 +17,18 @@ $user = $result->fetch_assoc();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bezeroak</title>
+    <title>Langileak</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/taulak.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa; /* Gris clarito de fondo */
+            background-color: #f8f9fa;
         }
 
         h1 {
             font-weight: 700;
-        }
-
-        .table td img {
-            vertical-align: middle;
         }
 
         .card-container {
@@ -41,11 +37,6 @@ $user = $result->fetch_assoc();
             border-radius: 1rem;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-
-        .btn-sm img {
-            width: 20px;
-            height: 20px;
-        }
     </style>
 </head>
 
@@ -53,15 +44,14 @@ $user = $result->fetch_assoc();
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-        <a class="navbar-brand" href="bezeroa.php"><img src="img/harrobi2.png" alt="Logo" class="logo"
-                style="height: 85px;"></a>
+        <a class="navbar-brand" href="bezeroa.php"><img src="img/harrobi2.png" alt="Logo" class="logo" style="height:85px;"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="langilea.php">Langileak</a></li>
-                <li class="nav-item"><a class="nav-link active" href="bezeroa.php">Bezeroak</a></li>
+                <li class="nav-item"><a class="nav-link active" href="langilea.php">Langileak</a></li>
+                <li class="nav-item"><a class="nav-link" href="bezeroa.php">Bezeroak</a></li>
                 <li class="nav-item"><a class="nav-link" href="instalazioak.php">Instalazioak</a></li>
             </ul>
             <a href="perfila.php" style="text-decoration: none;">
@@ -74,14 +64,12 @@ $user = $result->fetch_assoc();
     </nav>
 
     <div class="container mt-5 card-container">
-
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="text-primary">Bezeroak</h1>
-            <a href="bezeroaGehitu.php" class="btn btn-success btn-md">Gehitu Bezeroa</a>
+            <h1 class="text-primary">Langileak</h1>
         </div>
 
         <div class="table-responsive">
-            <table class="table table-hover rounded-3 shadow-sm">
+            <table class="table table-hover table-striped rounded-3 shadow-sm">
                 <thead class="table-dark">
                     <tr>
                         <th>Izena</th>
@@ -89,14 +77,11 @@ $user = $result->fetch_assoc();
                         <th>Email-a</th>
                         <th>Pasahitza</th>
                         <th>NAN</th>
-                        <th>Instalazioa</th>
-                        <th>Aldatu</th>
-                        <th>Ezabatu</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    $sql = "SELECT * FROM bezeroa";
+                    $sql = "SELECT * FROM langilea";
                     $result = $conn->query($sql);
 
                     if ($result->num_rows > 0) {
@@ -105,13 +90,8 @@ $user = $result->fetch_assoc();
                             echo "<td>" . $row["izena"] . "</td>";
                             echo "<td>" . $row["abizena"] . "</td>";
                             echo "<td>" . $row["email"] . "</td>";
-                            echo "<td>" . $row["pasahitza"] . "</td>";
+                            echo "<td>********</td>";
                             echo "<td>" . $row["nan"] . "</td>";
-                            echo "<td>" . $row["instalazioa"] . "</td>";
-                            echo '<td><a href="bezeroaAldatu.php?id=' . $row['id'] . '" class="btn btn-warning btn-sm">
-                                    <img src="img/aldatu.png" alt="Aldatu"></a></td>';
-                            echo '<td><a href="bezeroaEzabatu.php?id=' . $row['id'] . '" class="btn btn-danger btn-sm">
-                                    <img src="img/ezabatu.png" alt="Ezabatu"></a></td>';
                             echo "</tr>";
                         }
                     }

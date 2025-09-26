@@ -1,5 +1,7 @@
 <?php
 require "konexioa.php";
+require 'session.php';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['id'];
     $izena = $_POST['bezeroaIzena'];
@@ -9,7 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nan = $_POST['bezeroaNan'];
     $instalazioa = $_POST['bezeroaInstalazioa'];
 
-    // Validaciones solo visuales con Bootstrap, no mostrar mensajes PHP
     $stmt = $conn->prepare("UPDATE bezeroa SET izena = ?, abizena = ?, email = ?, pasahitza = ?, nan = ?, instalazioa = ? WHERE id = ?");
     $stmt->bind_param("ssssssi", $izena, $abizena, $email, $pasahitza, $nan, $instalazioa, $id);
 
@@ -37,6 +38,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $instalazioak_sql = "SELECT id, izena FROM instalazioa";
     $instalazioak_result = $conn->query($instalazioak_sql);
 
+    $userId = $_SESSION['user_id'];
+
+    $stmt = $conn->prepare("SELECT izena, abizena FROM langilea WHERE id = ?");
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
 }
 
 
@@ -49,28 +57,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hasiera</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-ENjdO4Dr2bkBIFxQpeoA6VKHr8z2mbx5l1Z9gqG1skCkP0r5hXQ6tZTt3M1QF0k0" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="css/navbar.css">
 <link rel="stylesheet" href="css/taulak.css">
 <link rel="stylesheet" href="css/form.css">
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-ENjdO4Dr2bkBIFxQpeoA6VKHr8z2mbx5l1Z9gqG1skCkP0r5hXQ6tZTt3M1QF0k0" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
-    <nav>
-        <nav class="navbar">
-            <img src="img/harrobi.png" alt="Logo" class="logo">
-            <ul>
-                <li><a href="bezeroa.php">Bezeroak</a></li>
-                <li><a href="instalazioak.php">Instalazioak</a></li>
-                <li><a href="index.php">Saioa Itxi</a></li>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+        <a class="navbar-brand" href="bezeroa.php"><img src="img/harrobi2.png" alt="Logo" class="logo"
+                style="height: 85px;"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="langilea.php">Langileak</a></li>
+                <li class="nav-item"><a class="nav-link active" href="bezeroa.php">Bezeroak</a></li>
+                <li class="nav-item"><a class="nav-link" href="instalazioak.php">Instalazioak</a></li>
             </ul>
-        </nav>
-
-
+            <a href="perfila.php" style="text-decoration: none;">
+                <span class="navbar-text text-white me-3">
+                    <?= htmlspecialchars($user['izena']) . ' ' . htmlspecialchars($user['abizena']) ?>
+                </span>
+            </a>
+            <a href="index.php" class="btn btn-outline-light btn-sm">Saioa Itxi</a>
+        </div>
     </nav>
     <h1>BEZEROA ALDATU</h1>
     <form action="bezeroaAldatu.php" method="post">
