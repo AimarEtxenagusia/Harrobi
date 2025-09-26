@@ -81,8 +81,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <nav class="navbar">
             <img src="img/harrobi.png" alt="Logo" class="logo">
             <ul>
-                <li><a href="index.php">Bezeroak</a></li>
+                <li><a href="bezeroa.php">Bezeroak</a></li>
                 <li><a href="instalazioak.php">Instalazioak</a></li>
+                <li><a href="index.php">Saioa Itxi</a></li>
             </ul>
         </nav>
 
@@ -115,7 +116,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <select class="form-select" id="bezeroaInstalazioa" name="bezeroaInstalazioa" required>
                 <option value="">Aukeratu instalazioa</option>
                 <?php
-                // Volver a importar las instalaciones si el formulario se muestra tras POST
                 if (!isset($instalazioak_result) || !$instalazioak_result) {
                     $instalazioak_sql = "SELECT * FROM instalazioa";
                     $instalazioak_result = $conn->query($instalazioak_sql);
@@ -141,6 +141,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
        
     </form>
 
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
 
 
 </body>

@@ -60,23 +60,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-                echo "<tr>";
-                echo "<td>" . $row["izena"] . "</td>";
-                echo "<td>" . $row["abizena"] . "</td>";
-                echo "<td>" . $row["email"] . "</td>";
-                echo "<td>" . $row["pasahitza"] . "</td>";
-                echo "<td>" . $row["nan"] . "</td>";
-                echo "<td>" . $row["instalazioa"] . "</td>";
-                echo '<td id="aldatu"><a href="bezeroaAldatu.php?id=' . $row['id'] . '"><img src="img/aldatu.png" alt="Aldatu"></a></td>';
-                echo '<td id="ezabatu"><a href="bezeroaEzabatu.php?id=' . $row['id'] . '"><img src="img/ezabatu.png" alt="Ezabatu"></a></td>';
-                echo "</tr>";
-
-            }
-        }
-        ?>
-    </table>
-
-         <a href="bezeroaGehitu.php"><button id="btn" type="submit">GEHITU Bezeroa</button></a>
-</body>
 
 </html>
