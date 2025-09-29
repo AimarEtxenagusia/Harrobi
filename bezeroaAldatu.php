@@ -3,17 +3,14 @@ require "konexioa.php";
 require 'session.php';
 $userId = $_SESSION['user_id'];
 
-// Obtener datos del usuario logueado
 $stmt = $conn->prepare("SELECT izena, abizena FROM langilea WHERE id = ?");
 $stmt->bind_param("i", $userId);
 $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 
-// Inicializar variables de error
 $textuaIzena = $textuaAbizena = $textuaEmaila = $textuaPasahitza = $textuaNan = $textuaInstalazioa = "";
 
-// Obtener datos del cliente a editar
 $id = $_GET['id'] ?? '';
 $stmt = $conn->prepare("SELECT izena, abizena, email, pasahitza, nan, instalazioa FROM bezeroa WHERE id = ?");
 $stmt->bind_param("i", $id);
@@ -125,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <p class="text-danger"><?= $textuaPasahitza ?></p>
 
     <label for="bezeroaNan" class="form-label">NAN-A <span style="color:red">*</span></label>
-    <input type="text" class="form-control" id="bezeroaNan" name="bezeroaNan" value="<?= ($nan ?? $row['nan']) ?>" required pattern="^[0-9]{8}[A-Za-z]$">
+    <input type="text" class="form-control" id="bezeroaNan" name="bezeroaNan" placeholder="Adb: 12345678A" value="<?= ($nan ?? $row['nan'])  ?>" required pattern="^[0-9]{8}[A-Za-z]$">
     <p class="text-danger"><?= $textuaNan ?></p>
 
     <label for="bezeroaInstalazioa" class="form-label">INSTALAZIOAREN IZENA <span style="color:red">*</span></label>

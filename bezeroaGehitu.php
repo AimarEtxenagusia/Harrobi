@@ -136,7 +136,7 @@ $instalazioak_result = $conn->query($instalazioak_sql);
     <p class="text-danger"><?= $textuaPasahitza ?></p>
 
     <label for="bezeroaNan" class="form-label">NAN-A <span style="color:red">*</span></label>
-    <input type="text" class="form-control" id="bezeroaNan" name="bezeroaNan" value="<?= isset($nan) ? ($nan) : '' ?>" required pattern="^[0-9]{8}[A-Za-z]$">
+    <input type="text" class="form-control" id="bezeroaNan" name="bezeroaNan" placeholder="Adb: 12345678A" value="<?= isset($nan) ? ($nan) : '' ?>" required pattern="^[0-9]{8}[A-Za-z]$">
     <p class="text-danger"><?= $textuaNan ?></p>
 
     <label for="bezeroaInstalazioa" class="form-label">INSTALAZIOAREN IZENA <span style="color:red">*</span></label>
