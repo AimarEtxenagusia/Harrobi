@@ -1,6 +1,7 @@
 <?php
 require 'konexioa.php';
 require 'session.php';
+require 'model/instalazioa.php';
 
 $userId = $_SESSION['user_id'];
 
@@ -9,6 +10,8 @@ $stmt->bind_param("i", $userId);
 $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
+
+$instalazioak = Instalazioa::ikusiInstalazioa($conn);
 ?>
 
 <!DOCTYPE html>
@@ -50,10 +53,9 @@ $user = $result->fetch_assoc();
 </head>
 
 <body>
-
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-        <a class="navbar-brand" href="bezeroa.php"><img src="img/harrobi2.png" alt="Logo" class="logo" style="height:85px;"></a>
+        <a class="navbar-brand" href="bezeroa.php"><img src="img/harrobi2.png" alt="Logo" class="logo"
+                style="height:85px;"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -72,7 +74,6 @@ $user = $result->fetch_assoc();
         </div>
     </nav>
 
-    <!-- Contenedor principal -->
     <div class="container mt-5 card-container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="text-primary">Instalazioak</h1>
@@ -90,20 +91,17 @@ $user = $result->fetch_assoc();
                 </thead>
                 <tbody>
                     <?php
-                    $sql = "SELECT * FROM instalazioa";
-                    $result = $conn->query($sql);
 
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>" . $row["izena"] . "</td>";
-                            echo '<td><a href="instalazioaAldatu.php?id=' . $row['id'] . '" class="btn btn-warning btn-sm">
+                    foreach ($instalazioak as $instalazio) {
+                        echo "<tr>";
+                        echo "<td>" . $instalazio->getIzena() . "</td>";
+                        echo '<td><a href="instalazioaAldatu.php?id=' . $instalazio->getId() . '" class="btn btn-warning btn-sm">
                                     <img src="img/aldatu.png" alt="Aldatu"></a></td>';
-                            echo '<td><a href="instalazioaEzabatu.php?id=' . $row['id'] . '" class="btn btn-danger btn-sm">
+                        echo '<td><a href="instalazioaEzabatu.php?id=' . $instalazio->getId() . '" class="btn btn-danger btn-sm">
                                     <img src="img/ezabatu.png" alt="Ezabatu"></a></td>';
-                            echo "</tr>";
-                        }
+                        echo "</tr>";
                     }
+
                     ?>
                 </tbody>
             </table>

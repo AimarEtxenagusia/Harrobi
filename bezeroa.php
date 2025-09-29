@@ -1,6 +1,7 @@
 <?php
 require 'konexioa.php';
 require 'session.php';
+require 'model/bezeroak.php';
 
 $userId = $_SESSION['user_id'];
 
@@ -9,6 +10,8 @@ $stmt->bind_param("i", $userId);
 $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
+
+$bezeroak = Bezeroak::ikusiBezeroak($conn);
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +27,8 @@ $user = $result->fetch_assoc();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa; /* Gris clarito de fondo */
+            background-color: #f8f9fa;
+            /* Gris clarito de fondo */
         }
 
         h1 {
@@ -69,7 +73,7 @@ $user = $result->fetch_assoc();
                     <?= $user['izena'] . ' ' . $user['abizena'] ?>
                 </span>
             </a>
-            <a href="index.php" class="btn btn-outline-light btn-sm">Saioa Itxi</a>
+            <a href="index.php" class="btn btn-outline-light btn-sm float-end">Saioa Itxi</a>
         </div>
     </nav>
 
@@ -95,26 +99,23 @@ $user = $result->fetch_assoc();
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    $sql = "SELECT * FROM bezeroa";
-                    $result = $conn->query($sql);
+                    <?php   
 
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>" . $row["izena"] . "</td>";
-                            echo "<td>" . $row["abizena"] . "</td>";
-                            echo "<td>" . $row["email"] . "</td>";
-                            echo "<td>" . $row["pasahitza"] . "</td>";
-                            echo "<td>" . $row["nan"] . "</td>";
-                            echo "<td>" . $row["instalazioa"] . "</td>";
-                            echo '<td><a href="bezeroaAldatu.php?id=' . $row['id'] . '" class="btn btn-warning btn-sm">
+                    foreach ($bezeroak as $bezero) {
+                        echo "<tr>";
+                        echo "<td>" . $bezero->getIzena() . "</td>";
+                        echo "<td>" . $bezero->getAbizena() . "</td>";
+                        echo "<td>" . $bezero->getEmail() . "</td>";
+                        echo "<td>" . $bezero->getPasahitza() . "</td>";
+                        echo "<td>" . $bezero->getNan() . "</td>";
+                        echo "<td>" . $bezero->getInstalazioa() . "</td>";
+                        echo '<td><a href="bezeroaAldatu.php?id=' . $bezero->getId() . '" class="btn btn-warning btn-sm">
                                     <img src="img/aldatu.png" alt="Aldatu"></a></td>';
-                            echo '<td><a href="bezeroaEzabatu.php?id=' . $row['id'] . '" class="btn btn-danger btn-sm">
+                        echo '<td><a href="bezeroaEzabatu.php?id=' . $bezero->getId() . '" class="btn btn-danger btn-sm">
                                     <img src="img/ezabatu.png" alt="Ezabatu"></a></td>';
-                            echo "</tr>";
-                        }
+                        echo "</tr>";
                     }
+                    
                     ?>
                 </tbody>
             </table>

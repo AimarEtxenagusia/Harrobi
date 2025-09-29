@@ -1,121 +1,156 @@
 <?php
 require "konexioa.php";
 require 'session.php';
+$userId = $_SESSION['user_id'];
+
+// Obtener datos del usuario logueado
+$stmt = $conn->prepare("SELECT izena, abizena FROM langilea WHERE id = ?");
+$stmt->bind_param("i", $userId);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
+
+// Inicializar variables de error
+$textuaIzena = $textuaAbizena = $textuaEmaila = $textuaPasahitza = $textuaNan = $textuaInstalazioa = "";
+
+// Obtener datos del cliente a editar
+$id = $_GET['id'] ?? '';
+$stmt = $conn->prepare("SELECT izena, abizena, email, pasahitza, nan, instalazioa FROM bezeroa WHERE id = ?");
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$result = $stmt->get_result();
+if ($result->num_rows != 1) {
+    die("Ez da bezerorik aurkitu");
+}
+$row = $result->fetch_assoc();
+
+// Obtener instalaciones
+$instalazioak_sql = "SELECT id, izena FROM instalazioa";
+$instalazioak_result = $conn->query($instalazioak_sql);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id = $_POST['id'];
-    $izena = $_POST['bezeroaIzena'];
-    $abizena = $_POST['bezeroaAbizena'];
-    $email = $_POST['bezeroaEmail'];
-    $pasahitza = $_POST['bezeroaPasahitza'];
-    $nan = $_POST['bezeroaNan'];
-    $instalazioa = $_POST['bezeroaInstalazioa'];
+    $izena = trim($_POST['bezeroaIzena']);
+    $abizena = trim($_POST['bezeroaAbizena']);
+    $email = trim($_POST['bezeroaEmail']);
+    $pasahitza = trim($_POST['bezeroaPasahitza']);
+    $nan = trim($_POST['bezeroaNan']);
+    $instalazioa_id = $_POST['bezeroaInstalazioa'];
 
-    $stmt = $conn->prepare("UPDATE bezeroa SET izena = ?, abizena = ?, email = ?, pasahitza = ?, nan = ?, instalazioa = ? WHERE id = ?");
-    $stmt->bind_param("ssssssi", $izena, $abizena, $email, $pasahitza, $nan, $instalazioa, $id);
-
-    if ($stmt->execute()) {
-        header("Location: bezeroa.php");
-        exit;
-    } else {
-        echo "Errorea: " . $stmt->error;
-    }
-} else {
-    $id = $_GET['id'];
-
-    $sql = "SELECT izena, abizena, email, pasahitza, nan, instalazioa FROM bezeroa WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows == 1) {
-        $row = $result->fetch_assoc();
-    } else {
-        die("Ez da bezerorik aurkitu");
+    $instalazioa = "";
+    if ($instalazioa_id != "") {
+        $instalazioa_query = "SELECT izena FROM instalazioa WHERE id = '$instalazioa_id'";
+        $instalazioa_result_temp = $conn->query($instalazioa_query);
+        if ($instalazioa_result_temp && $instalazioa_result_temp->num_rows > 0) {
+            $instalazioa_row = $instalazioa_result_temp->fetch_assoc();
+            $instalazioa = $instalazioa_row['izena'];
+        }
     }
 
-    $instalazioak_sql = "SELECT id, izena FROM instalazioa";
-    $instalazioak_result = $conn->query($instalazioak_sql);
+    // Validación
+    $errores = [];
+    if (empty($izena)) { $textuaIzena = "'Izena' jarri behar duzu."; $errores[] = $textuaIzena; }
+    if (empty($abizena)) { $textuaAbizena = "'Abizena' jarri behar duzu."; $errores[] = $textuaAbizena; }
+    if (empty($email)) { $textuaEmaila = "'Emaila' jarri behar duzu."; $errores[] = $textuaEmaila; }
+    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) { $textuaEmaila = "'Emaila' ez da zuzena."; $errores[] = $textuaEmaila; }
+    if (empty($pasahitza)) { $textuaPasahitza = "'Pasahitza' jarri behar duzu."; $errores[] = $textuaPasahitza; }
+    if (empty($nan)) { $textuaNan = "'Nan-a' jarri behar duzu."; $errores[] = $textuaNan; }
+    elseif (!preg_match('/^[0-9]{8}[A-Za-z]$/', $nan)) { $textuaNan = "'Nan-ak' 9 karaktere izan behar ditu."; $errores[] = $textuaNan; }
+    if (empty($instalazioa_id)) { $textuaInstalazioa = "'Instalazioa' aukeratu behar duzu."; $errores[] = $textuaInstalazioa; }
 
-    $userId = $_SESSION['user_id'];
-
-    $stmt = $conn->prepare("SELECT izena, abizena FROM langilea WHERE id = ?");
-    $stmt->bind_param("i", $userId);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
+    if (count($errores) === 0) {
+        $stmt = $conn->prepare("UPDATE bezeroa SET izena = ?, abizena = ?, email = ?, pasahitza = ?, nan = ?, instalazioa = ? WHERE id = ?");
+        $stmt->bind_param("ssssssi", $izena, $abizena, $email, $pasahitza, $nan, $instalazioa, $id);
+        if ($stmt->execute()) {
+            header("Location: bezeroa.php");
+            exit;
+        } else {
+            echo '<div class="alert alert-danger mt-3">Errorea: ' . $stmt->error . '</div>';
+        }
+    }
 }
-
 
 ?>
 
 <!DOCTYPE html>
-
+<html lang="es">
 <head>
-</head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hasiera</title>
+<title>BEZEROA ALDATU</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="css/navbar.css">
 <link rel="stylesheet" href="css/taulak.css">
 <link rel="stylesheet" href="css/form.css">
+<link rel="stylesheet" href="css/btn.css">
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-        <a class="navbar-brand" href="bezeroa.php"><img src="img/harrobi2.png" alt="Logo" class="logo"
-                style="height: 85px;"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="langilea.php">Langileak</a></li>
-                <li class="nav-item"><a class="nav-link active" href="bezeroa.php">Bezeroak</a></li>
-                <li class="nav-item"><a class="nav-link" href="instalazioak.php">Instalazioak</a></li>
-            </ul>
-            <a href="perfila.php" style="text-decoration: none;">
-                <span class="navbar-text text-white me-3">
-                    <?= htmlspecialchars($user['izena']) . ' ' . htmlspecialchars($user['abizena']) ?>
-                </span>
-            </a>
-            <a href="index.php" class="btn btn-outline-light btn-sm">Saioa Itxi</a>
-        </div>
-    </nav>
-    <h1>BEZEROA ALDATU</h1>
-    <form action="bezeroaAldatu.php" method="post">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+    <a class="navbar-brand" href="bezeroa.php"><img src="img/harrobi2.png" alt="Logo" class="logo" style="height: 85px;"></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="langilea.php">Langileak</a></li>
+            <li class="nav-item"><a class="nav-link active" href="bezeroa.php">Bezeroak</a></li>
+            <li class="nav-item"><a class="nav-link" href="instalazioak.php">Instalazioak</a></li>
+        </ul>
+        <a href="perfila.php" style="text-decoration: none;">
+            <span class="navbar-text text-white me-3"><?= ($user['izena']) . ' ' . ($user['abizena']) ?></span>
+        </a>
+        <a href="index.php" class="btn btn-outline-light btn-sm">Saioa Itxi</a>
+    </div>
+</nav>
 
-        <label for="name">IZENA</label>
-        <input type="text" name="bezeroaIzena" value="<?php echo $row['izena'] ?>" required>
-        <label for="name">ABIZENA</label>
-        <input type="text" name="bezeroaAbizena" value="<?php echo $row['abizena'] ?>" required>
-        <label for="name">EMAIL-A</label>
-        <input type="text" name="bezeroaEmail" value="<?php echo $row['email'] ?>" required>
-        <label for="name">PASAHITZA</label>
-        <input type="text" name="bezeroaPasahitza" value="<?php echo $row['pasahitza'] ?>" required>
-        <label for="name">NAN-A</label>
-        <input type="text" name="bezeroaNan" value="<?php echo $row['nan'] ?>" required>
-        <label for="name">INSTALAZIOAREN IZENA</label>
-        <select name="bezeroaInstalazioa" required>
-            <?php
-            while ($instalazioa = $instalazioak_result->fetch_assoc()) {
-                $selected = ($instalazioa['izena'] == $row['instalazioa']) ? "selected" : "";
-                echo "<option value='" . $instalazioa['izena'] . "' $selected>" . $instalazioa['izena'] . "</option>";
+<div class="container mt-4">
+<h1>BEZEROA ALDATU</h1>
+<form action="bezeroaAldatu.php?id=<?= $id ?>" method="post" class="needs-validation" novalidate>
+    <input type="hidden" name="id" value="<?= $id ?>">
+
+    <label for="bezeroaIzena" class="form-label">IZENA <span style="color:red">*</span></label>
+    <input type="text" class="form-control" id="bezeroaIzena" name="bezeroaIzena" value="<?= ($izena ?? $row['izena']) ?>" required>
+    <p class="text-danger"><?= $textuaIzena ?></p>
+
+    <label for="bezeroaAbizena" class="form-label">ABIZENA <span style="color:red">*</span></label>
+    <input type="text" class="form-control" id="bezeroaAbizena" name="bezeroaAbizena" value="<?= ($abizena ?? $row['abizena']) ?>" required>
+    <p class="text-danger"><?= $textuaAbizena ?></p>
+
+    <label for="bezeroaEmail" class="form-label">EMAIL-A <span style="color:red">*</span></label>
+    <input type="email" class="form-control" id="bezeroaEmail" name="bezeroaEmail" value="<?= ($email ?? $row['email']) ?>" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+    <p class="text-danger"><?= $textuaEmaila ?></p>
+
+    <label for="bezeroaPasahitza" class="form-label">PASAHITZA <span style="color:red">*</span></label>
+    <input type="password" class="form-control" id="bezeroaPasahitza" name="bezeroaPasahitza" value="<?= ($pasahitza ?? $row['pasahitza']) ?>" required>
+    <p class="text-danger"><?= $textuaPasahitza ?></p>
+
+    <label for="bezeroaNan" class="form-label">NAN-A <span style="color:red">*</span></label>
+    <input type="text" class="form-control" id="bezeroaNan" name="bezeroaNan" value="<?= ($nan ?? $row['nan']) ?>" required pattern="^[0-9]{8}[A-Za-z]$">
+    <p class="text-danger"><?= $textuaNan ?></p>
+
+    <label for="bezeroaInstalazioa" class="form-label">INSTALAZIOAREN IZENA <span style="color:red">*</span></label>
+    <select class="form-select" id="bezeroaInstalazioa" name="bezeroaInstalazioa" required>
+        <option value="">Aukeratu instalazioa</option>
+        <?php
+        if ($instalazioak_result && $instalazioak_result->num_rows > 0) {
+            foreach ($instalazioak_result as $instalazioa_opt) {
+                $selected_id = $instalazioa_id ?? '';
+                $selected_name = $instalazioa ?? $row['instalazioa'];
+                $selected = ($instalazioa_opt['izena'] == $selected_name) ? 'selected' : '';
+                echo "<option value='" . $instalazioa_opt['id'] . "' $selected>" . $instalazioa_opt['izena'] . "</option>";
             }
-            ?>
-        </select>
-        <input type="hidden" name="id" value="<?php echo $id; ?>">
+        }
+        ?>
+    </select>
+    <p class="text-danger"><?= $textuaInstalazioa ?></p>
 
-        <input type="submit" value="ALDATU">
-        <a class="btn-cancel" href="bezeroa.php">ITZULI</a>
-    </form>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
+    <div class="d-flex gap-2 mt-3">
+        <button type="submit" class="btn btn-primary w-100">ALDATU</button>
+        <a class="btn btn-secondary w-100" href="bezeroa.php">ITZULI</a>
+    </div>
+</form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

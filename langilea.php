@@ -1,6 +1,7 @@
 <?php
 require 'konexioa.php';
 require 'session.php';
+require 'model/langileak.php';
 
 $userId = $_SESSION['user_id'];
 
@@ -9,6 +10,8 @@ $stmt->bind_param("i", $userId);
 $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
+
+$langileak = Langileak::ikusiLangileak($conn);
 ?>
 
 <!DOCTYPE html>
@@ -44,7 +47,8 @@ $user = $result->fetch_assoc();
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-        <a class="navbar-brand" href="bezeroa.php"><img src="img/harrobi2.png" alt="Logo" class="logo" style="height:85px;"></a>
+        <a class="navbar-brand" href="bezeroa.php"><img src="img/harrobi2.png" alt="Logo" class="logo"
+                style="height:85px;"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -81,20 +85,17 @@ $user = $result->fetch_assoc();
                 </thead>
                 <tbody>
                     <?php
-                    $sql = "SELECT * FROM langilea";
-                    $result = $conn->query($sql);
 
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>" . $row["izena"] . "</td>";
-                            echo "<td>" . $row["abizena"] . "</td>";
-                            echo "<td>" . $row["email"] . "</td>";
-                            echo "<td>********</td>";
-                            echo "<td>" . $row["nan"] . "</td>";
-                            echo "</tr>";
-                        }
+                    foreach ($langileak as $langile) {
+                        echo "<tr>";
+                        echo "<td>" . $langile->getIzena() . "</td>";
+                        echo "<td>" . $langile->getAbizena() . "</td>";
+                        echo "<td>" . $langile->getEmail() . "</td>";
+                        echo "<td>********</td>";
+                        echo "<td>" . $langile->getNan() . "</td>";
+                        echo "</tr>";
                     }
+
                     ?>
                 </tbody>
             </table>
