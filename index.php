@@ -1,9 +1,10 @@
 <?php
-require "konexioa.php";
+require "conn/konexioa.php";
+require 'model/langileak.php';
     
 session_start();
 
-$error_msg = ""; // Para guardar el mensaje de error
+$error_msg = ""; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
@@ -12,21 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($email) || empty($pasahitza)) {
         $error_msg = "Sartu datu guztiak";
     } else {
-        $stmt = $conn->prepare("SELECT id, izena, abizena, email, pasahitza FROM langilea WHERE email = ? AND pasahitza = ?");
-        $stmt->bind_param("ss", $email, $pasahitza);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $_SESSION['user_id'] = $row['id'];
-            $_SESSION['user'] = $row['izena'];
-            $_SESSION['user_abizena'] = $row['abizena'];
-            header("Location: bezeroa.php");
-            exit;
-        } else {
-            $error_msg = "Datuak ez dira zuzenak";
-        }
+        $error_msg = Langileak::login($conn, $email, $pasahitza);
     }
 }
 ?>
@@ -50,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <?php if ($error_msg): ?>
-            <div class="alert alert-danger text-center"><?= htmlspecialchars($error_msg) ?></div>
+            <div class="alert alert-danger text-center"><?= $error_msg ?></div>
         <?php endif; ?>
 
         <form action="index.php" method="post">

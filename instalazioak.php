@@ -1,6 +1,6 @@
 <?php
-require 'konexioa.php';
-require 'session.php';
+require 'conn/konexioa.php';
+require 'session/session.php';
 require 'model/instalazioa.php';
 
 $userId = $_SESSION['user_id'];
@@ -12,6 +12,12 @@ $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 
 $instalazioak = Instalazioa::ikusiInstalazioa($conn);
+
+if (isset($_POST['delete'])) {
+    $id = $_POST['id'];
+    Instalazioa::ezabatuInstalazioa($conn, $id);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -22,6 +28,8 @@ $instalazioak = Instalazioa::ikusiInstalazioa($conn);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instalazioak</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/taulak.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
@@ -53,26 +61,8 @@ $instalazioak = Instalazioa::ikusiInstalazioa($conn);
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-        <a class="navbar-brand" href="bezeroa.php"><img src="img/harrobi2.png" alt="Logo" class="logo"
-                style="height:85px;"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="langilea.php">Langileak</a></li>
-                <li class="nav-item"><a class="nav-link" href="bezeroa.php">Bezeroak</a></li>
-                <li class="nav-item"><a class="nav-link active" href="instalazioak.php">Instalazioak</a></li>
-            </ul>
-            <a href="perfila.php" style="text-decoration: none;">
-                <span class="navbar-text text-white me-3">
-                    <?= $user['izena'] . ' ' . $user['abizena'] ?>
-                </span>
-            </a>
-            <a href="index.php" class="btn btn-outline-light btn-sm">Saioa Itxi</a>
-        </div>
-    </nav>
+
+    <?php include 'navbar/navbar.php'; ?>
 
     <div class="container mt-5 card-container">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -81,7 +71,7 @@ $instalazioak = Instalazioa::ikusiInstalazioa($conn);
         </div>
 
         <div class="table-responsive">
-            <table class="table table-hover table-striped rounded-3 shadow-sm">
+            <table class="table table-hover table-striped rounded-3 shadow-smtable animate__animated animate__fadeIn">
                 <thead class="table-dark">
                     <tr>
                         <th>Izena</th>
@@ -97,8 +87,14 @@ $instalazioak = Instalazioa::ikusiInstalazioa($conn);
                         echo "<td>" . $instalazio->getIzena() . "</td>";
                         echo '<td><a href="instalazioaAldatu.php?id=' . $instalazio->getId() . '" class="btn btn-warning btn-sm">
                                     <img src="img/aldatu.png" alt="Aldatu"></a></td>';
-                        echo '<td><a href="instalazioaEzabatu.php?id=' . $instalazio->getId() . '" class="btn btn-danger btn-sm">
-                                    <img src="img/ezabatu.png" alt="Ezabatu"></a></td>';
+                        echo '<td>
+                            <form method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="' . $instalazio->getId() . '">
+                                <button type="submit" name="delete" class="btn btn-danger btn-sm">
+                                    <img src="img/ezabatu.png" alt="Ezabatu">
+                                </button>
+                            </form>
+                        </td>';
                         echo "</tr>";
                     }
 

@@ -1,6 +1,6 @@
 <?php
-require 'konexioa.php';
-require 'session.php';
+require 'conn/konexioa.php';
+require 'session/session.php';
 require 'model/bezeroak.php';
 
 $userId = $_SESSION['user_id'];
@@ -12,6 +12,12 @@ $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 
 $bezeroak = Bezeroak::ikusiBezeroak($conn);
+
+if (isset($_POST['delete'])) {
+    $id = $_POST['id'];
+    Bezeroak::ezabatuBezeroa($conn, $id);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -23,12 +29,13 @@ $bezeroak = Bezeroak::ikusiBezeroak($conn);
     <title>Bezeroak</title>
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/taulak.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #f8f9fa;
-            /* Gris clarito de fondo */
         }
 
         h1 {
@@ -55,27 +62,7 @@ $bezeroak = Bezeroak::ikusiBezeroak($conn);
 
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-        <a class="navbar-brand" href="bezeroa.php"><img src="img/harrobi2.png" alt="Logo" class="logo"
-                style="height: 85px;"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="langilea.php">Langileak</a></li>
-                <li class="nav-item"><a class="nav-link active" href="bezeroa.php">Bezeroak</a></li>
-                <li class="nav-item"><a class="nav-link" href="instalazioak.php">Instalazioak</a></li>
-            </ul>
-            <a href="perfila.php" style="text-decoration: none;">
-                <span class="navbar-text text-white me-3">
-                    <?= $user['izena'] . ' ' . $user['abizena'] ?>
-                </span>
-            </a>
-            <a href="index.php" class="btn btn-outline-light btn-sm float-end">Saioa Itxi</a>
-        </div>
-    </nav>
+    <?php include 'navbar/navbar.php'; ?>
 
     <div class="container mt-5 card-container">
 
@@ -85,7 +72,7 @@ $bezeroak = Bezeroak::ikusiBezeroak($conn);
         </div>
 
         <div class="table-responsive">
-            <table class="table table-hover rounded-3 shadow-sm">
+            <table class="table table-hover rounded-3 shadow-sm table animate__animated animate__fadeIn">
                 <thead class="table-dark">
                     <tr>
                         <th>Izena</th>
@@ -99,7 +86,7 @@ $bezeroak = Bezeroak::ikusiBezeroak($conn);
                     </tr>
                 </thead>
                 <tbody>
-                    <?php   
+                    <?php
 
                     foreach ($bezeroak as $bezero) {
                         echo "<tr>";
@@ -111,11 +98,18 @@ $bezeroak = Bezeroak::ikusiBezeroak($conn);
                         echo "<td>" . $bezero->getInstalazioa() . "</td>";
                         echo '<td><a href="bezeroaAldatu.php?id=' . $bezero->getId() . '" class="btn btn-warning btn-sm">
                                     <img src="img/aldatu.png" alt="Aldatu"></a></td>';
-                        echo '<td><a href="bezeroaEzabatu.php?id=' . $bezero->getId() . '" class="btn btn-danger btn-sm">
-                                    <img src="img/ezabatu.png" alt="Ezabatu"></a></td>';
+                        echo '<td>
+                            <form method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="' . $bezero->getId() . '">
+                                <button type="submit" name="delete" class="btn btn-danger btn-sm">
+                                    <img src="img/ezabatu.png" alt="Ezabatu">
+                                </button>
+                            </form>
+                        </td>';
+
                         echo "</tr>";
                     }
-                    
+
                     ?>
                 </tbody>
             </table>

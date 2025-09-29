@@ -104,7 +104,46 @@ class Bezeroak
             }
         }
         return $bezeroak;
-    }   
+    }
+
+    public static function gehituBezeroa($conn, $izena, $abizena, $email, $pasahitza, $nan, $instalazioa)
+    {
+        $stmt = $conn->prepare("INSERT INTO bezeroa (izena, abizena, email, pasahitza, nan, instalazioa) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssss", $izena, $abizena, $email, $pasahitza, $nan, $instalazioa);
+        if ($stmt->execute()) {
+            header("Location: bezeroa.php");
+        } else {
+            echo '<div class="alert alert-danger mt-3">Errorea: ' . $stmt->error . '</div>';
+        }
+    }
+
+    public static function aldatuBezeroa($conn, $izena, $abizena, $email, $pasahitza, $nan, $instalazioa, $id)
+    {
+        $stmt = $conn->prepare("UPDATE bezeroa SET izena = ?, abizena = ?, email = ?, pasahitza = ?, nan = ?, instalazioa = ? WHERE id = ?");
+        $stmt->bind_param("ssssssi", $izena, $abizena, $email, $pasahitza, $nan, $instalazioa, $id);
+        if ($stmt->execute()) {
+            header("Location: bezeroa.php");
+        } else {
+            echo '<div class="alert alert-danger mt-3">Errorea: ' . $stmt->error . '</div>';
+        }
+    }
+
+    public static function ezabatuBezeroa($conn, $id)
+    {
+        $stmt = $conn->prepare('DELETE FROM instalazioa WHERE id = ?');
+        $sql = "DELETE FROM bezeroa WHERE id = ?";
+        if ($stmt = $conn->prepare($sql)) {
+            $stmt->bind_param("i", $id);
+
+            if ($stmt->execute()) {
+                header("Location: bezeroa.php");
+            } else {
+                echo "Errorea: " . $stmt->error;
+            }
+        } else {
+            echo "Errorea gertatu da prestatzerako orduan: " . $conn->error;
+        }
+    }
 
 }
 ?>
