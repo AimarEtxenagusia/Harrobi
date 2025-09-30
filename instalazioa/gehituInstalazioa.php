@@ -42,9 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 
 
-    <?php include '../navbar/navbar.php'; ?>
+    <?php include '../templates/navbar.php'; ?>
 
-    <div class="container mt-4">
+    <main class="container mt-4">
         <h1>INSTALAZIO BERRIA</h1>
         <form action="" method="post" class="needs-validation animate__animated animate__fadeInUp" novalidate>
             <label for="instalazioIzena" class="form-label">INSTALAZIOAREN IZENA <span
@@ -58,7 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <a class="btn btn-secondary w-100" href="instalazioak.php">ITZULI</a>
             </div>
         </form>
-    </div>
+    </main>
+
+    <?php include '../templates/footer.php'; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>

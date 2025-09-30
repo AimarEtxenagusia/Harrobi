@@ -35,16 +35,17 @@ if (isset($_POST['delete'])) {
 
 <body>
 
-    <?php include '../navbar/navbar.php'; ?>
+    <?php include '../templates/navbar.php'; ?>
 
-    <div class="container mt-5 card-container">
+    <main class="container mt-5 card-container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="text-primary">Instalazioak</h1>
-            <a href="gehituInstalazioa.php" class="btn btn-success btn-md animate__animated animate__bounce">Gehitu Instalazioa</a>
+            <a href="gehituInstalazioa.php" class="btn btn-success btn-md animate__animated animate__bounce">Gehitu
+                Instalazioa</a>
         </div>
 
         <div class="table-responsive">
-            <table class="table table-hover rounded-3 shadow-smtable animate__animated animate__fadeIn">
+            <table class="table table-hover rounded-3 shadow-sm table animate__animated animate__fadeIn">
                 <thead class="table-dark">
                     <tr>
                         <th>Izena</th>
@@ -75,7 +76,9 @@ if (isset($_POST['delete'])) {
                 </tbody>
             </table>
         </div>
-    </div>
+    </main>
+
+    <?php include '../templates/footer.php'; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>

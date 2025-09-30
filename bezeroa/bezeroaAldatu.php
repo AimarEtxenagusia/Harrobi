@@ -98,9 +98,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
 
-    <?php include '../navbar/navbar.php'; ?>
+    <?php include '../templates/navbar.php'; ?>
 
-    <div class="container mt-4">
+    <main class="container mt-4">
         <h1>BEZEROA ALDATU</h1>
         <form class="animate__animated animate__fadeInUp" action="bezeroaAldatu.php?id=<?= $id ?>" method="post"
             class="needs-validation" novalidate>
@@ -154,7 +154,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <a class="btn btn-secondary w-100   " href="bezeroa.php">ITZULI</a>
             </div>
         </form>
-    </div>
+    </main>
+
+    <?php include '../templates/footer.php'; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -94,9 +94,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 
 
-    <?php include '../navbar/navbar.php'; ?>
+    <?php include '../templates/navbar.php'; ?>
 
-    <div class="container mt-4">
+    <main class="container mt-4">
         <h1>NIRE PERFILA</h1>
         <form action="perfila.php" method="post" class="animate__animated animate__fadeInUp" novalidate>
             <div class="mb-3">
@@ -140,7 +140,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="submit" class="btn btn-primary">ALDATU</button>
             </div>
         </form>
-    </div>
+    </main>
+
+    <?php include '../templates/footer.php'; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -36,14 +36,13 @@ if (isset($_POST['delete'])) {
 
 <body>
 
-    <?php include '../navbar/navbar.php'; ?>
+    <?php include '../templates/navbar.php'; ?>
 
-    <div class="container mt-5 card-container">
+    <main class="container mt-5 card-container">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="text-primary">Bezeroak</h1>
-            <a href="bezeroaGehitu.php" class="btn btn-success btn-md animate__animated animate__bounce">Gehitu
-                Bezeroa</a>
+            <a href="bezeroaGehitu.php" class="btn btn-success btn-md animate__animated animate__bounce">Gehitu Bezeroa</a>
         </div>
 
         <div class="table-responsive">
@@ -89,7 +88,10 @@ if (isset($_POST['delete'])) {
                 </tbody>
             </table>
         </div>
-    </div>
+    </main>
+
+    <?php include '../templates/footer.php'; ?>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>

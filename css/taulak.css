@@ -1,5 +1,16 @@
+html,
 body {
-    background-color: #f8f9fa;
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
 }
 
 h1 {
@@ -21,4 +32,3 @@ h1 {
     width: 20px;
     height: 20px;
 }
-
