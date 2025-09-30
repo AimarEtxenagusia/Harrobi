@@ -1,7 +1,7 @@
 <?php
-require 'conn/konexioa.php';
-require 'session/session.php';
-require 'model/instalazioa.php';
+require '../conn/konexioa.php';
+require '../session/session.php';
+require '../model/instalazioa.php';
 
 $userId = $_SESSION['user_id'];
 
@@ -29,13 +29,13 @@ if (isset($_POST['delete'])) {
     <title>Instalazioak</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <link rel="stylesheet" href="css/taulak.css">
+    <link rel="stylesheet" href="../css/taulak.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-    <?php include 'navbar/navbar.php'; ?>
+    <?php include '../navbar/navbar.php'; ?>
 
     <div class="container mt-5 card-container">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -59,12 +59,12 @@ if (isset($_POST['delete'])) {
                         echo "<tr>";
                         echo "<td>" . $instalazio->getIzena() . "</td>";
                         echo '<td><a href="instalazioaAldatu.php?id=' . $instalazio->getId() . '" class="btn btn-warning btn-sm">
-                                    <img src="img/aldatu.png" alt="Aldatu"></a></td>';
+                                    <img src="../img/aldatu.png" alt="Aldatu"></a></td>';
                         echo '<td>
                             <form method="post" style="display:inline;">
                                 <input type="hidden" name="id" value="' . $instalazio->getId() . '">
                                 <button type="submit" name="delete" class="btn btn-danger btn-sm">
-                                    <img src="img/ezabatu.png" alt="Ezabatu">
+                                    <img src="../img/ezabatu.png" alt="Ezabatu">
                                 </button>
                             </form>
                         </td>';

@@ -1,7 +1,7 @@
 <?php
-require 'conn/konexioa.php';
-require 'session/session.php';
-require 'model/langileak.php';
+require '../conn/konexioa.php';
+require '../session/session.php';
+require '../model/langileak.php';
 
 $userId = $_SESSION['user_id'];
 
@@ -23,14 +23,14 @@ $langileak = Langileak::ikusiLangileak($conn);
     <title>Langileak</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/navbar.css">
-    <link rel="stylesheet" href="css/taulak.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/taulak.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 
 </head>
 
 <body>
-    <?php include 'navbar/navbar.php'; ?>
+    <?php include '../navbar/navbar.php'; ?>
 
     <div class="container mt-5 card-container">
         <div class="d-flex justify-content-between align-items-center mb-4">

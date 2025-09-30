@@ -1,7 +1,7 @@
 <?php
-require "conn/konexioa.php";
-require 'session/session.php';
-require 'model/bezeroak.php';
+require "../conn/konexioa.php";
+require '../session/session.php';
+require '../model/bezeroak.php';
 $userId = $_SESSION['user_id'];
 
 $stmt = $conn->prepare("SELECT izena, abizena FROM langilea WHERE id = ?");
@@ -81,16 +81,16 @@ $instalazioak_result = $conn->query($instalazioak_sql);
     <title>BEZEROA GEHITU</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/navbar.css">
-    <link rel="stylesheet" href="css/taulak.css">
-    <link rel="stylesheet" href="css/form.css">
-    <link rel="stylesheet" href="css/btn.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/taulak.css">
+    <link rel="stylesheet" href="../css/form.css">
+    <link rel="stylesheet" href="../css/btn.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-    <?php include 'navbar/navbar.php'; ?>
+    <?php include '../navbar/navbar.php'; ?>
     <div class="container mt-4">
         <h1>Bezeroa Gehitu</h1>
         <form class="animate__animated animate__fadeInUp" action="" method="post" class="needs-validation" novalidate>

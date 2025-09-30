@@ -1,7 +1,7 @@
 <?php
-require 'conn/konexioa.php';
-require 'session/session.php';
-require 'model/bezeroak.php';
+require '../conn/konexioa.php';
+require '../session/session.php';
+require '../model/bezeroak.php';
 
 $userId = $_SESSION['user_id'];
 
@@ -27,8 +27,8 @@ if (isset($_POST['delete'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bezeroak</title>
-    <link rel="stylesheet" href="css/navbar.css">
-    <link rel="stylesheet" href="css/taulak.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/taulak.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -36,7 +36,7 @@ if (isset($_POST['delete'])) {
 
 <body>
 
-    <?php include 'navbar/navbar.php'; ?>
+    <?php include '../navbar/navbar.php'; ?>
 
     <div class="container mt-5 card-container">
 
@@ -72,12 +72,12 @@ if (isset($_POST['delete'])) {
                         echo "<td>" . $bezero->getNan() . "</td>";
                         echo "<td>" . $bezero->getInstalazioa() . "</td>";
                         echo '<td><a href="bezeroaAldatu.php?id=' . $bezero->getId() . '" class="btn btn-warning btn-sm">
-                                    <img src="img/aldatu.png" alt="Aldatu"></a></td>';
+                                    <img src="../img/aldatu.png" alt="Aldatu"></a></td>';
                         echo '<td>
                             <form method="post" style="display:inline;">
                                 <input type="hidden" name="id" value="' . $bezero->getId() . '">
                                 <button type="submit" name="delete" class="btn btn-danger btn-sm">
-                                    <img src="img/ezabatu.png" alt="Ezabatu">
+                                    <img src="../img/ezabatu.png" alt="Ezabatu">
                                 </button>
                             </form>
                         </td>';

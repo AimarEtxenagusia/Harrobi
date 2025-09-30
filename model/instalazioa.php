@@ -50,7 +50,7 @@ class Instalazioa
         $stmt = $conn->prepare("INSERT INTO instalazioa (izena) VALUES (?)");
         $stmt->bind_param("s", $izena);
         if ($stmt->execute()) {
-            header("Location: instalazioak.php");
+            header("Location: ../instalazioa/instalazioak.php");
         } else {
             echo '<div class="alert alert-danger mt-3">Errorea: ' . $stmt->error . '</div>';
         }
@@ -62,7 +62,7 @@ class Instalazioa
         $stmt->bind_param("si", $izena, $id);
 
         if ($stmt->execute()) {
-            header("Location: instalazioak.php");
+            header("Location: ../instalazioa/instalazioak.php");
         } else {
             $textuaInstalazioa = "Errorea: " . $stmt->error;
         }
@@ -79,7 +79,7 @@ class Instalazioa
             $stmt->bind_param("i", $id);
 
             if ($stmt->execute()) {
-            header("Location: instalazioak.php");
+            header("Location: ../instalazioa/instalazioak.php");
             } else {
                 echo "Errorea: " . $stmt->error;
             }

@@ -104,7 +104,7 @@ class Langileak
             $_SESSION['user_id'] = $row['id'];
             $_SESSION['user'] = $row['izena'];
             $_SESSION['user_abizena'] = $row['abizena'];
-            header("Location: bezeroa.php");
+            header("Location: bezeroa/bezeroa.php");
             exit;
         } else {
             $error_msg = "Datuak ez dira zuzenak";
@@ -118,7 +118,7 @@ class Langileak
         $stmt->bind_param("sssssi", $izena, $abizena, $email, $pasahitza, $nan, $id);
 
         if ($stmt->execute()) {
-            header("Location: index.php");
+            header("Location: ../index.php");
             exit;
         } else {
             echo "Errorea: " . $stmt->error;

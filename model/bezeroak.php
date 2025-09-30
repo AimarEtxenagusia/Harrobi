@@ -111,7 +111,7 @@ class Bezeroak
         $stmt = $conn->prepare("INSERT INTO bezeroa (izena, abizena, email, pasahitza, nan, instalazioa) VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("ssssss", $izena, $abizena, $email, $pasahitza, $nan, $instalazioa);
         if ($stmt->execute()) {
-            header("Location: bezeroa.php");
+            header("Location: ../bezeroa/bezeroa.php");
         } else {
             echo '<div class="alert alert-danger mt-3">Errorea: ' . $stmt->error . '</div>';
         }
@@ -122,7 +122,7 @@ class Bezeroak
         $stmt = $conn->prepare("UPDATE bezeroa SET izena = ?, abizena = ?, email = ?, pasahitza = ?, nan = ?, instalazioa = ? WHERE id = ?");
         $stmt->bind_param("ssssssi", $izena, $abizena, $email, $pasahitza, $nan, $instalazioa, $id);
         if ($stmt->execute()) {
-            header("Location: bezeroa.php");
+            header("Location: ../bezeroa/bezeroa.php");
         } else {
             echo '<div class="alert alert-danger mt-3">Errorea: ' . $stmt->error . '</div>';
         }
@@ -136,7 +136,7 @@ class Bezeroak
             $stmt->bind_param("i", $id);
 
             if ($stmt->execute()) {
-                header("Location: bezeroa.php");
+                header("Location: ../bezeroa/bezeroa.php");
             } else {
                 echo "Errorea: " . $stmt->error;
             }
