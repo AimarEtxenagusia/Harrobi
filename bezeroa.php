@@ -30,34 +30,8 @@ if (isset($_POST['delete'])) {
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/taulak.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        h1 {
-            font-weight: 700;
-        }
-
-        .table td img {
-            vertical-align: middle;
-        }
-
-        .card-container {
-            background-color: #ffffff;
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-sm img {
-            width: 20px;
-            height: 20px;
-        }
-    </style>
 </head>
 
 <body>
@@ -68,7 +42,8 @@ if (isset($_POST['delete'])) {
 
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="text-primary">Bezeroak</h1>
-            <a href="bezeroaGehitu.php" class="btn btn-success btn-md">Gehitu Bezeroa</a>
+            <a href="bezeroaGehitu.php" class="btn btn-success btn-md animate__animated animate__bounce">Gehitu
+                Bezeroa</a>
         </div>
 
         <div class="table-responsive">

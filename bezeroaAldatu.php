@@ -13,10 +13,8 @@ $user = $result->fetch_assoc();
 $textuaIzena = $textuaAbizena = $textuaEmaila = $textuaPasahitza = $textuaNan = $textuaInstalazioa = "";
 
 $id = $_GET['id'] ?? '';
-$stmt = $conn->prepare("SELECT izena, abizena, email, pasahitza, nan, instalazioa FROM bezeroa WHERE id = ?");
-$stmt->bind_param("i", $id);
-$stmt->execute();
-$result = $stmt->get_result();
+$result = Bezeroak::aurkituBezeroa($conn, $id);
+
 if ($result->num_rows != 1) {
     die("Ez da bezerorik aurkitu");
 }
@@ -89,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BEZEROA ALDATU</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/taulak.css">
@@ -104,7 +102,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="container mt-4">
         <h1>BEZEROA ALDATU</h1>
-        <form class="animate__animated animate__fadeInUp" action="bezeroaAldatu.php?id=<?= $id ?>" method="post" class="needs-validation" novalidate>
+        <form class="animate__animated animate__fadeInUp" action="bezeroaAldatu.php?id=<?= $id ?>" method="post"
+            class="needs-validation" novalidate>
             <input type="hidden" name="id" value="<?= $id ?>">
 
             <label for="bezeroaIzena" class="form-label">IZENA <span style="color:red">*</span></label>

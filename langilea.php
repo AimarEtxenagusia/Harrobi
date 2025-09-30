@@ -26,22 +26,7 @@ $langileak = Langileak::ikusiLangileak($conn);
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/taulak.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
 
-        h1 {
-            font-weight: 700;
-        }
-
-        .card-container {
-            background-color: #ffffff;
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-    </style>
 </head>
 
 <body>
@@ -53,7 +38,7 @@ $langileak = Langileak::ikusiLangileak($conn);
         </div>
 
         <div class="table-responsive">
-            <table class="table table-hover table-striped rounded-3 shadow-sm table animate__animated animate__fadeIn">
+            <table class="table table-hover rounded-3 shadow-sm table animate__animated animate__fadeIn">
                 <thead class="table-dark">
                     <tr>
                         <th>Izena</th>

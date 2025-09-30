@@ -145,5 +145,13 @@ class Bezeroak
         }
     }
 
+    public static function aurkituBezeroa($conn, $id)
+    {
+        $stmt = $conn->prepare("SELECT izena, abizena, email, pasahitza, nan, instalazioa FROM bezeroa WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+
 }
 ?>
