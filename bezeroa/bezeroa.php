@@ -3,7 +3,11 @@ require '../conn/konexioa.php';
 require '../session/session.php';
 require '../model/bezeroak.php';
 
+define('BASE_URL', '/Ariketak%20vsCode/Harrobi/');
+
 $userId = $_SESSION['user_id'];
+
+
 
 $stmt = $conn->prepare("SELECT izena, abizena FROM langilea WHERE id = ?");
 $stmt->bind_param("i", $userId);
@@ -16,8 +20,8 @@ $bezeroak = Bezeroak::ikusiBezeroak($conn);
 if (isset($_POST['delete'])) {
     $id = $_POST['id'];
     Bezeroak::ezabatuBezeroa($conn, $id);
-}
 
+}
 ?>
 
 <!DOCTYPE html>
@@ -42,7 +46,8 @@ if (isset($_POST['delete'])) {
 
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="text-primary">Bezeroak</h1>
-            <a href="bezeroaGehitu.php" class="btn btn-success btn-md animate__animated animate__bounce">Gehitu Bezeroa</a>
+            <a href="bezeroaGehitu.php" class="btn btn-success btn-md animate__animated animate__bounce">Gehitu
+                Bezeroa</a>
         </div>
 
         <div class="table-responsive">

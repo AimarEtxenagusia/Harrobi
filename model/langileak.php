@@ -70,25 +70,40 @@ class Langileak
     {
         $this->nan = $nan;
     }
-
+    public static function gehituLangilea($conn, $izena, $abizena, $email, $pasahitza, $nan)
+    {
+        $stmt = $conn->prepare("INSERT INTO langilea (izena, abizena, email, pasahitza, nan, rol) VALUES (?, ?, ?, ?, ?, 'user')");
+        $stmt->bind_param("sssss", $izena, $abizena, $email, $pasahitza, $nan);
+        if ($stmt->execute()) {
+            header("Location: ../langilea/langileaAdmin.php");
+        } else {
+            echo '<div class="alert alert-danger mt-3">Errorea: ' . $stmt->error . '</div>';
+        }
+    }
     public static function ikusiLangileak($conn)
     {
         $sql = "SELECT * FROM langilea";
         $result = $conn->query($sql);
 
+        $langileak = [];
+
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                $langile = new Langileak(
-                    $row["id"],
-                    $row["izena"],
-                    $row["abizena"],
-                    $row["email"],
-                    $row["pasahitza"],
-                    $row["nan"]
-                );
-                $langileak[] = $langile;
+                if ($row["rol"] == "user") {
+                    $langile = new Langileak(
+                        $row["id"],
+                        $row["izena"],
+                        $row["abizena"],
+                        $row["email"],
+                        $row["pasahitza"],
+                        $row["nan"]
+                    );
+
+                    $langileak[] = $langile; // Solo añadir si es user
+                }
             }
         }
+
         return $langileak;
     }
 
@@ -124,5 +139,37 @@ class Langileak
             echo "Errorea: " . $stmt->error;
         }
     }
+
+    public static function aldatuLangilea($conn, $izena, $abizena, $email, $pasahitza, $nan, $id)
+    {
+        $stmt = $conn->prepare("UPDATE langilea SET izena = ?, abizena = ?, email = ?, pasahitza = ?, nan = ? WHERE id = ?");
+        $stmt->bind_param("sssssi", $izena, $abizena, $email, $pasahitza, $nan, $id);
+        if ($stmt->execute()) {
+            header("Location: ../langilea/langileaAdmin.php");
+        } else {
+            echo '<div class="alert alert-danger mt-3">Errorea: ' . $stmt->error . '</div>';
+        }
+    }
+    public static function ezabatuLangilea($conn, $id)
+    {
+        $stmt = $conn->prepare("DELETE FROM langilea WHERE id = ?");
+        $stmt->bind_param("i", $id);
+
+        if ($stmt->execute()) {
+            header("Location: ../langilea/langileaAdmin.php");
+            exit;
+        } else {
+            echo "Errorea: " . $stmt->error;
+        }
+    }
+
+    public static function aurkituLangilea($conn, $id)
+    {
+        $stmt = $conn->prepare("SELECT izena, abizena, email, pasahitza, nan FROM langilea WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+
 }
 ?>

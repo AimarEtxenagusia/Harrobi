@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $textuaNan = "Sartu NAN-a.";
         $errores[] = $textuaNan;
     } elseif (!preg_match('/^[0-9]{8}[A-Za-z]$/', $nan)) {
-        $textuaNan = "NAN-ak 8 zenbaki + letra izan behar ditu.";
+        $textuaNan = "NAN-ak 9 karaktere izan behar ditu.";
         $errores[] = $textuaNan;
     }
 
@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="mb-3">
                 <label for="langileaNan" class="form-label">NAN-a</label>
-                <input type="text" name="langileaNan" id="langileaNan" class="form-control"
+                <input placeholder="Adb: 12345678A" type="text" name="langileaNan" id="langileaNan" class="form-control"
                     value="<?= htmlspecialchars($nan ?? $row['nan']) ?>" required pattern="^[0-9]{8}[A-Za-z]$">
                 <p class="text-danger"><?= $textuaNan ?></p>
             </div>

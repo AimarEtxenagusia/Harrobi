@@ -13,8 +13,13 @@ $user = $result->fetch_assoc();
 
 $langileak = Langileak::ikusiLangileak($conn);
 
-if ($user["rol"] == "admin") {
-    header("Location: ../langilea/langileaAdmin.php");
+if ($user["rol"] == "user") {
+    header("Location: https://thatsthefinger.com/");
+}
+
+if (isset($_POST["delete"])) {
+    $id = $_POST["id"];
+    Langileak::ezabatuLangilea($conn, $id);
 }
 
 ?>
@@ -40,8 +45,8 @@ if ($user["rol"] == "admin") {
     <main class="container mt-5 card-container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="text-primary">Langileak</h1>
+            <a href="langileaGehitu.php" class="btn btn-success btn-md animate__animated animate__bounce">Gehitu Langilea</a>
         </div>
-
         <div class="table-responsive">
             <table class="table table-hover rounded-3 shadow-sm table animate__animated animate__fadeIn">
                 <thead class="table-dark">
@@ -51,6 +56,8 @@ if ($user["rol"] == "admin") {
                         <th>Email-a</th>
                         <th>Pasahitza</th>
                         <th>NAN</th>
+                        <th>Aldatu</th>
+                        <th>Ezabatu </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -63,6 +70,18 @@ if ($user["rol"] == "admin") {
                         echo "<td>" . $langile->getEmail() . "</td>";
                         echo "<td>********</td>";
                         echo "<td>" . $langile->getNan() . "</td>";
+                        echo '<td><a href="langileaAldatu.php?id=' . $langile->getId() . '" class="btn btn-warning btn-sm">
+                                    <img src="../img/aldatu.png" alt="Aldatu"></a></td>';
+                        echo '<td>
+                            <form method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="' . $langile->getId() . '">
+                                <button type="submit" name="delete" class="btn btn-danger btn-sm">
+                                    <img src="../img/ezabatu.png" alt="Ezabatu">
+                                </button>
+                            </form>
+                        </td>';
+
+                        echo "</tr>";
                         echo "</tr>";
                     }
 
