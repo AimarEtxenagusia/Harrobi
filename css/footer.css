@@ -1,16 +1,19 @@
+/* footer-a estiloak */
 footer {
-    background: #222;
-    color: #fff;
-    padding: 10px 0;
-    text-align: center;
+    background: #222; /* atzeko kolorea */
+    color: #fff; /* testu kolorea */
+    padding: 10px 0; /* goiko eta beheko espazioa */
+    text-align: center; /* testua erdian jarri */
 }
 
+/* footer barruko nabigazio estiloa */
 footer nav a {
-    color: #fff;
-    margin: 0 10px;
-    text-decoration: none;
+    color: #fff; /* linkak zuriz */
+    margin: 0 10px; /* alde bakoitzean tartea */
+    text-decoration: none; /* azpimarratua kendu */
 }
 
+/* linkak hover egiterakoan */
 footer nav a:hover {
-    text-decoration: underline;
+    text-decoration: underline; /* azpimarratua jarri */
 }

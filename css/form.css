@@ -1,18 +1,20 @@
+/* orokorra: html eta body */
 html,
 body {
-    height: 100%;
-    margin: 0;
+    height: 100%; /* pantaila guztia bete */
+    margin: 0; /* margina kendu */
 }
 
 body {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* gorputza zutabe moduan antolatu */
 }
 
 main {
-    flex: 1;
+    flex: 1; /* main-ek gainerako espazioa beteko du */
 }
 
+/* H1 estiloa */
 h1 {
     text-align: center;
     color: #2c7a7b;
@@ -21,9 +23,10 @@ h1 {
     margin-bottom: 20px;
 }
 
+/* formularioa estiloak */
 form {
     width: 300px;
-    margin: 0 auto;
+    margin: 0 auto; /* erdian jarri */
     background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
@@ -38,6 +41,7 @@ form label {
     color: #2d3748;
 }
 
+/* input estiloak */
 form input[type="text"],
 form input[type="password"],
 form input[type="email"] {
@@ -64,11 +68,13 @@ form input[type="submit"]:hover {
     cursor: pointer;
 }
 
+/* input focus efektua */
 form input[type="text"]:focus {
     border-color: #2c7a7b;
-    outline: none;
+    outline: none; /* fokua margina kendu */
 }
 
+/* gehitu botoia */
 form button#gehitu {
     width: 100%;
     background-color: #22c55e;
@@ -85,13 +91,15 @@ form button#gehitu:hover {
     background-color: #16a34a;
 }
 
-.btn-cancel {
+/* cancel botoia estiloak */
+.btn-cancel,
+#btn-cancel {
     display: inline-block;
     text-align: center;
     width: 100%;
     padding: 10px;
     background-color: #fb2908c9;
-    color: rgb(255, 255, 255);
+    color: white;
     text-decoration: none;
     border-radius: 4px;
     transition: background-color 0.3s;
@@ -101,22 +109,11 @@ form button#gehitu:hover {
     background-color: #696f76;
 }
 
-#btn-cancel {
-    display: inline-block;
-    text-align: center;
-    width: 100%;
-    padding: 10px;
-    background-color: #fb2908c9;
-    color: rgb(255, 255, 255);
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-}
-
 #btn-cancel:hover {
     background-color: #b8bfc7;
 }
 
+/* select estiloak */
 select {
     width: 100%;
     padding: 10px;
@@ -126,11 +123,9 @@ select {
     font-size: 16px;
     font-family: 'Lato', sans-serif;
     appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
     background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='292.4'%20height='292.4'%3E%3Cpath%20fill='%23999'%20d='M287%2069.4c0-4.9-1.9-9.7-5.5-13.4-7.4-7.4-19.3-7.4-26.7%200L146.2%20165.2%2037.6%2056.6c-7.4-7.4-19.3-7.4-26.7%200-7.4%207.4-7.4%2019.3%200%2026.7l120.5%20120.5c7.4%207.4%2019.3%207.4%2026.7%200L281.5%2082.8c3.6-3.6%205.5-8.4%205.5-13.4z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 10px center;
+    background-position: right 10px center; /* sagua ezkerrerantz */
     background-size: 12px;
     cursor: pointer;
     margin-bottom: 20px;
@@ -139,9 +134,10 @@ select {
 select:focus {
     border-color: #007BFF;
     outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* fokua nabarmendu */
 }
 
+/* botoi nagusiak */
 #btn {
     margin-top: 50px;
     font-size: 25px;
@@ -158,5 +154,5 @@ select:focus {
 }
 
 #btn-Secondary {
-    background-color: #fb2908c9;
+    background-color: #fb2908c9; /* botoi bigarren maila */
 }

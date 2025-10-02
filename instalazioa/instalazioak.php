@@ -1,21 +1,24 @@
 <?php
-require '../conn/konexioa.php';
-require '../session/session.php';
-require '../model/instalazioa.php';
+require '../conn/konexioa.php'; // DB konexioa
+require '../session/session.php'; // saio kontrola
+require '../model/instalazioa.php'; // Instalazioa klasea
 
-$userId = $_SESSION['user_id'];
+$userId = $_SESSION['user_id']; // saioan dagoen erabiltzailearen ID
 
+// langilearen izena eta abizena hartu
 $stmt = $conn->prepare("SELECT izena, abizena FROM langilea WHERE id = ?");
 $stmt->bind_param("i", $userId);
 $stmt->execute();
 $result = $stmt->get_result();
-$user = $result->fetch_assoc();
+$user = $result->fetch_assoc(); // datuak array batean
 
+// instalazio guztiak hartu
 $instalazioak = Instalazioa::ikusiInstalazioa($conn);
 
+// ezabatzeko botoia sakatu bada
 if (isset($_POST['delete'])) {
-    $id = $_POST['id'];
-    Instalazioa::ezabatuInstalazioa($conn, $id);
+    $id = $_POST['id']; // ezabatzeko ID hartu
+    Instalazioa::ezabatuInstalazioa($conn, $id); // DB-tik ezabatu
 }
 
 ?>
@@ -27,6 +30,7 @@ if (isset($_POST['delete'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instalazioak</title>
+    <!-- bootstrap eta CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" href="../css/taulak.css">
@@ -35,11 +39,12 @@ if (isset($_POST['delete'])) {
 
 <body>
 
-    <?php include '../templates/navbar.php'; ?>
+    <?php include '../templates/navbar.php'; ?> <!-- nabigazio barra -->
 
     <main class="container mt-5 card-container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="text-primary">Instalazioak</h1>
+            <!-- gehitu instalazio botoia -->
             <a href="gehituInstalazioa.php" class="btn btn-success btn-md animate__animated animate__bounce">Gehitu
                 Instalazioa</a>
         </div>
@@ -55,12 +60,14 @@ if (isset($_POST['delete'])) {
                 </thead>
                 <tbody>
                     <?php
-
+                    // hemen taula betetzen dugu foreach-ekin
                     foreach ($instalazioak as $instalazio) {
                         echo "<tr>";
-                        echo "<td>" . $instalazio->getIzena() . "</td>";
+                        echo "<td>" . $instalazio->getIzena() . "</td>"; // izena
+                        // aldatu botoia
                         echo '<td><a href="instalazioaAldatu.php?id=' . $instalazio->getId() . '" class="btn btn-warning btn-sm">
                                     <img src="../img/aldatu.png" alt="Aldatu"></a></td>';
+                        // ezabatu botoia form baten bidez
                         echo '<td>
                             <form method="post" style="display:inline;">
                                 <input type="hidden" name="id" value="' . $instalazio->getId() . '">
@@ -71,14 +78,13 @@ if (isset($_POST['delete'])) {
                         </td>';
                         echo "</tr>";
                     }
-
                     ?>
                 </tbody>
             </table>
         </div>
     </main>
 
-    <?php include '../templates/footer.php'; ?>
+    <?php include '../templates/footer.php'; ?> <!-- footer -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>

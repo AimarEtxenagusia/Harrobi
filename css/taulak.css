@@ -1,9 +1,13 @@
+/* html eta body orokorra */
 html,
 body {
     height: 100%;
+    /* pantaila guztia bete */
     margin: 0;
+    /* margina kendu */
 }
 
+/* body flex moduan antolatu, zutabeak */
 body {
     display: flex;
     flex-direction: column;
@@ -11,23 +15,30 @@ body {
 
 main {
     flex: 1;
+    /* main-ek gainerako espazioa beteko du */
 }
 
+/* H1 estiloa */
 h1 {
     font-weight: 700;
+    /* letra lodia */
 }
 
+/* taulako irudiak erdian lerrokatzea */
 .table td img {
     vertical-align: middle;
 }
 
+/* card-container estiloak */
 .card-container {
     background-color: #ffffff;
     padding: 2rem;
     border-radius: 1rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    /* itzal arina */
 }
 
+/* botoi txikietako irudiak */
 .btn-sm img {
     width: 20px;
     height: 20px;

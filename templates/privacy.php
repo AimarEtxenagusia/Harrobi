@@ -1,4 +1,5 @@
 <?php
+// Saioa hasi duen erabiltzailearen datuak lortu
 require "../conn/konexioa.php";
 require '../session/session.php';
 
@@ -17,42 +18,51 @@ $user = $result->fetch_assoc();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pribatutasun-politika</title>
+    <!-- CSSak eta fontak -->
     <link rel="stylesheet" href="../css/footer.css">
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Body flexbox, footer beti behean egon dadin */
+        body, html {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        main{
+            flex: 1; /* Main nagusiak espazioa beteko du */
+        }
+    </style>
 </head>
-<style>
-    body, html {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-    }
-    main{
-        flex: 1;
-    }
-</style>
+
 <body>
+    <!-- Navbar txertatu -->
     <?php include '../templates/navbar.php'; ?>
 
+    <!-- Edukia -->
     <main class="container mt-4">
         <h1>Pribatutasun-politika</h1>
         <p>
             Zure pribatutasuna oso garrantzitsua da guretzat. Bildutako datu pertsonalak administrazio helburuetarako
             bakarrik erabiltzen dira eta ez dira hirugarrenei partekatuko zure baimenik gabe.
         </p>
+
         <h2>Bildutako datuak</h2>
         <ul>
             <li>Izen eta abizenak</li>
             <li>Email helbidea</li>
             <li>Kontakturako informazioa</li>
         </ul>
+
         <h2>Informazioaren erabilera</h2>
         <p>
             Datuak kontuak kudeatzeko, informazio garrantzitsua bidaltzeko eta gure zerbitzuak hobetzeko erabiltzen
             dira.
         </p>
+
         <h2>Erabiltzailearen eskubideak</h2>
         <p>
             Zure datuetara sarbidea izan dezakezu, aldatu edo ezabatu nahi duzunean, gure taldearekin harremanetan
@@ -60,6 +70,7 @@ $user = $result->fetch_assoc();
         </p>
     </main>
 
+    <!-- Footer txertatu -->
     <?php include '../templates/footer.php'; ?>
 </body>
 

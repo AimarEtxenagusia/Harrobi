@@ -1,26 +1,29 @@
 <?php
+// konexioa, sesioa eta bezeroaren modeloa ekartzen ditugu
 require '../conn/konexioa.php';
 require '../session/session.php';
 require '../model/bezeroak.php';
 
+// Base URL definituta
 define('BASE_URL', '/Ariketak%20vsCode/Harrobi/');
 
+// Saioa hasi duen erabiltzailearen ID-a hartzen dut
 $userId = $_SESSION['user_id'];
 
-
-
+// erabiltzailearen datuak lortzeko kontsulta prestatzen dut
 $stmt = $conn->prepare("SELECT izena, abizena FROM langilea WHERE id = ?");
 $stmt->bind_param("i", $userId);
 $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 
+// bezero guztiak lortzen ditugu
 $bezeroak = Bezeroak::ikusiBezeroak($conn);
 
+// bezero bat ezabatzeko botoia sakatzen bada
 if (isset($_POST['delete'])) {
     $id = $_POST['id'];
-    Bezeroak::ezabatuBezeroa($conn, $id);
-
+    Bezeroak::ezabatuBezeroa($conn, $id); // hemen datu basetik ezabatzen dut
 }
 ?>
 
@@ -46,11 +49,13 @@ if (isset($_POST['delete'])) {
 
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="text-primary">Bezeroak</h1>
+            <!-- Bezero berria gehitzeko botoia -->
             <a href="bezeroaGehitu.php" class="btn btn-success btn-md animate__animated animate__bounce">Gehitu
                 Bezeroa</a>
         </div>
 
         <div class="table-responsive">
+            <!-- Taula: bezeroen informazioa erakusten da -->
             <table class="table table-hover rounded-3 shadow-sm table animate__animated animate__fadeIn">
                 <thead class="table-dark">
                     <tr>
@@ -66,7 +71,7 @@ if (isset($_POST['delete'])) {
                 </thead>
                 <tbody>
                     <?php
-
+                    // bezero bakoitza taulan erakusten dut
                     foreach ($bezeroak as $bezero) {
                         echo "<tr>";
                         echo "<td>" . $bezero->getIzena() . "</td>";
@@ -75,8 +80,12 @@ if (isset($_POST['delete'])) {
                         echo "<td>" . $bezero->getPasahitza() . "</td>";
                         echo "<td>" . $bezero->getNan() . "</td>";
                         echo "<td>" . $bezero->getInstalazioa() . "</td>";
+
+                        // Aldatzeko botoia (bezeroaAldatu.php-ra eramaten du)
                         echo '<td><a href="bezeroaAldatu.php?id=' . $bezero->getId() . '" class="btn btn-warning btn-sm">
                                     <img src="../img/aldatu.png" alt="Aldatu"></a></td>';
+
+                        // Ezabatzeko formularioa
                         echo '<td>
                             <form method="post" style="display:inline;">
                                 <input type="hidden" name="id" value="' . $bezero->getId() . '">
@@ -88,7 +97,6 @@ if (isset($_POST['delete'])) {
 
                         echo "</tr>";
                     }
-
                     ?>
                 </tbody>
             </table>
@@ -96,7 +104,6 @@ if (isset($_POST['delete'])) {
     </main>
 
     <?php include '../templates/footer.php'; ?>
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
